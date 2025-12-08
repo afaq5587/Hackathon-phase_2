@@ -1,55 +1,84 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+- Version change: 0.0.0 → 1.0.0
+- Added principles:
+  - Spec-Driven Development
+  - Clarity & Modularity
+  - Type Safety & Validation
+  - Consistency
+  - Security
+  - Performance
+- Removed sections:
+  - PRINCIPLE_6_NAME
+  - SECTION_2_NAME
+  - SECTION_3_NAME
+- Templates requiring updates:
+  - ✅ .specify/templates/plan-template.md
+  - ✅ .specify/templates/spec-template.md
+  - ✅ .specify/templates/tasks-template.md
+-->
+# Full-Stack Todo Application Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### Spec-Driven Development
+All features, endpoints, data models, and UI workflows must originate from explicit specifications.
+No coding begins until a complete spec is approved.
+All agents must follow the Constitution strictly.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### Clarity & Modularity
+Keep backend, frontend, DB models, and auth flows strictly separated.
+Use clean folder structures for scalability.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### Type Safety & Validation
+Use SQLModel for typed models.
+Use Zod or TypeScript interfaces for frontend validation.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### Consistency
+Prefer standard naming conventions for endpoints, components, files, DB fields.
+Use RESTful API principles.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### Security
+Mandatory authentication using Better Auth (email/password).
+Protect all user-specific routes.
 
-### [PRINCIPLE_6_NAME]
+### Performance
+Use Neon serverless PostgreSQL with connection pooling.
+Cache lists when possible.
 
+## Feature Progression
+Basic Level (Required for MVP)
 
-[PRINCIPLE__DESCRIPTION]
+- Add Task
+- Delete Task
+- Update Task
+- View Task List
+- Mark as Complete
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+These features must be implemented fully in both backend APIs and frontend UI.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+Intermediate Level
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+- Priorities (high/medium/low)
+- Tags/Categories
+- Search & Filter (keyword, status, priority, category)
+- Sort Tasks (due date, priority, alphabetical)
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+Advanced Level
+
+- Recurring Tasks
+- Due Dates with datetime pickers
+- Reminder & Notification system (browser notifications or email)
+
+## Technology Stack
+- Frontend: Next.js 16+ (App Router, Server Actions optional)
+- Backend: FastAPI (Python)
+- ORM: SQLModel
+- Database: Neon Serverless PostgreSQL
+- Auth: Better Auth
+- Infra: REST API with clear resource scoping: /api/{user_id}/tasks
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+All PRs/reviews must verify compliance. Complexity must be justified.
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
-
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2025-12-08 | **Last Amended**: 2025-12-08
