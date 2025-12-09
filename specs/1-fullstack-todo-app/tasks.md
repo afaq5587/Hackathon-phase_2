@@ -37,17 +37,17 @@
 **Goal**: Allow users to create, view, update, delete, and complete tasks.
 **Independent Test**: A user can log in, create a task, see it in a list, edit its title, mark it complete, and delete it.
 
-- [ ] T017 [US1] Implement `POST /api/v1/tasks` endpoint for creating tasks in `backend/src/api/tasks.py`.
-- [ ] T018 [US1] Implement `GET /api/v1/tasks` endpoint for listing tasks in `backend/src/api/tasks.py`.
-- [ ] T019 [US1] Implement `GET /api/v1/tasks/{id}` endpoint for fetching a single task in `backend/src/api/tasks.py`.
-- [ ] T020 [US1] Implement `PUT /api/v1/tasks/{id}` endpoint for updating a task in `backend/src/api/tasks.py`.
-- [ ] T021 [US1] Implement `DELETE /api/v1/tasks/{id}` endpoint for deleting a task in `backend/src/api/tasks.py`.
-- [ ] T022 [US1] Implement `PATCH /api/v1/tasks/{id}/complete` endpoint for toggling completion status in `backend/src/api/tasks.py`.
-- [ ] T023 [US1] Apply user_id scoping to all task queries in `backend/src/api/tasks.py` to ensure data isolation.
-- [ ] T024 [P] [US1] Build main task page layout in `frontend/src/app/tasks/page.tsx`.
-- [ ] T025 [P] [US1] Create 'Add Task' form component in `frontend/src/components/AddTaskForm.tsx`.
-- [ ] T026 [US1] Create `TaskList` component to display tasks in `frontend/src/components/TaskList.tsx`.
-- [ ] T027 [US1] Create `TaskItem` component for a single task's display and actions (edit, delete, complete) in `frontend/src/components/TaskItem.tsx`.
+- [X] T017 [US1] Implement `POST /api/v1/tasks` endpoint for creating tasks in `backend/src/api/tasks.py`.
+- [X] T018 [US1] Implement `GET /api/v1/tasks` endpoint for listing tasks in `backend/src/api/tasks.py`.
+- [X] T019 [US1] Implement `GET /api/v1/tasks/{id}` endpoint for fetching a single task in `backend/src/api/tasks.py`.
+- [X] T020 [US1] Implement `PUT /api/v1/tasks/{id}` endpoint for updating a task in `backend/src/api/tasks.py`.
+- [X] T021 [US1] Implement `DELETE /api/v1/tasks/{id}` endpoint for deleting a task in `backend/src/api/tasks.py`.
+- [X] T022 [US1] Implement `PATCH /api/v1/tasks/{id}/complete` endpoint for toggling completion status in `backend/src/api/tasks.py`.
+- [X] T023 [US1] Apply user_id scoping to all task queries in `backend/src/api/tasks.py` to ensure data isolation.
+- [X] T024 [P] [US1] Build main task page layout in `frontend/src/app/tasks/page.tsx`.
+- [X] T025 [P] [US1] Create 'Add Task' form component in `frontend/src/components/AddTaskForm.tsx`.
+- [X] T026 [US1] Create `TaskList` component to display tasks in `frontend/src/components/TaskList.tsx`.
+- [X] T027 [US1] Create `TaskItem` component for a single task's display and actions (edit, delete, complete) in `frontend/src/components/TaskItem.tsx`.
 - [ ] T028 [US1] Implement API service calls for all task CRUD operations in `frontend/src/services/api.ts`.
 - [ ] T029 [US1] Make task page UI responsive for mobile and desktop.
 
