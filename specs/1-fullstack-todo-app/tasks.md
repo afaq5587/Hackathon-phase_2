@@ -58,17 +58,17 @@
 **Goal**: Allow users to assign priorities and tags, then search, filter, and sort tasks.
 **Independent Test**: A user can assign a priority and tags, then use search, filter, and sort controls to organize their list.
 
-- [ ] T030 [US2] Extend `Task` model in `backend/src/models/task.py` to include `priority` (Enum) and `tags` (Array of strings).
-- [ ] T031 [US2] Generate and apply Alembic migration for new Task fields.
-- [ ] T032 [US2] Add query parameters to `GET /api/v1/tasks` for searching by keyword in `backend/src/api/tasks.py`.
-- [ ] T033 [US2] Add query parameters to `GET /api/v1/tasks` for filtering by status, priority, and tags in `backend/src/api/tasks.py`.
-- [ ] T034 [US2] Add query parameters to `GET /api/v1/tasks` for sorting by due date, priority, and title in `backend/src/api/tasks.py`.
-- [ ] T035 [P] [US2] Add priority dropdown to task creation/edit forms in `frontend/src/components/`.
-- [ ] T036 [P] [US2] Add tags input field to task creation/edit forms in `frontend/src/components/`.
-- [ ] T037 [P] [US2] Add search bar component to `frontend/src/app/tasks/page.tsx`.
-- [ ] T038 [P] [US2] Add filter controls component for status, priority, and tags to `frontend/src/app/tasks/page.tsx`.
-- [ ] T039 [P] [US2] Add sort dropdown component to `frontend/src/app/tasks/page.tsx`.
-- [ ] T040 [US2] Update frontend state management and API calls to handle search, filter, and sort parameters in `frontend/src/services/api.ts`.
+- [X] T030 [US2] Extend `Task` model in `backend/src/models/task.py` to include `priority` (Enum) and `tags` (Array of strings).
+- [X] T031 [US2] Generate and apply Alembic migration for new Task fields.
+- [X] T032 [US2] Add query parameters to `GET /api/v1/tasks` for searching by keyword in `backend/src/api/tasks.py`.
+- [X] T033 [US2] Add query parameters to `GET /api/v1/tasks` for filtering by status, priority, and tags in `backend/src/api/tasks.py`.
+- [X] T034 [US2] Add query parameters to `GET /api/v1/tasks` for sorting by due date, priority, and title in `backend/src/api/tasks.py`.
+- [X] T035 [P] [US2] Add priority dropdown to task creation/edit forms in `frontend/src/components/`.
+- [X] T036 [P] [US2] Add tags input field to task creation/edit forms in `frontend/src/components/`.
+- [X] T037 [P] [US2] Add search bar component to `frontend/src/app/tasks/page.tsx`.
+- [X] T038 [P] [US2] Add filter controls component for status, priority, and tags to `frontend/src/app/tasks/page.tsx`.
+- [X] T039 [P] [US2] Add sort dropdown component to `frontend/src/app/tasks/page.tsx`.
+- [X] T040 [US2] Update frontend state management and API calls to handle search, filter, and sort parameters in `frontend/src/services/api.ts`.
 
 ---
 

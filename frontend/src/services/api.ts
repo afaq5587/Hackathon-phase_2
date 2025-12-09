@@ -1,4 +1,4 @@
-import { Task, AuthResponse, User } from './types';
+import { Task, AuthResponse, User, Priority } from './types';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1';
 
@@ -75,8 +75,27 @@ export async function registerUser(email: string, password: string): Promise<Use
 }
 
 // Task CRUD Operations
-export async function fetchTasks(token: string): Promise<Task[]> {
-  return callApi<Task[]>('/tasks/', 'GET', token);
+interface FetchTasksParams {
+  search?: string;
+  is_completed?: boolean | '';
+  priority?: Priority | '';
+  tag?: string;
+  sort_by?: string;
+  order?: 'asc' | 'desc';
+}
+
+export async function fetchTasks(token: string, params: FetchTasksParams = {}): Promise<Task[]> {
+  const queryParams = new URLSearchParams();
+  if (params.search) queryParams.append('search', params.search);
+  if (params.is_completed !== '' && params.is_completed !== undefined) queryParams.append('is_completed', String(params.is_completed));
+  if (params.priority) queryParams.append('priority', params.priority);
+  if (params.tag) queryParams.append('tag', params.tag);
+  if (params.sort_by) queryParams.append('sort_by', params.sort_by);
+  if (params.order) queryParams.append('order', params.order);
+
+  const queryString = queryParams.toString();
+  const endpoint = queryString ? `/tasks/?${queryString}` : '/tasks/';
+  return callApi<Task[]>(endpoint, 'GET', token);
 }
 
 export async function createTask(token: string, taskData: Partial<Task>): Promise<Task> {

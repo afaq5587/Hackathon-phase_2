@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Priority } from '../services/types';
 
 interface AddTaskFormProps {
   onTaskAdded: () => void;
@@ -9,14 +10,18 @@ interface AddTaskFormProps {
 export default function AddTaskForm({ onTaskAdded }: AddTaskFormProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [priority, setPriority] = useState<Priority | ''>('');
+  const [tags, setTags] = useState(''); // State for tags
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Logic to add task via API will go here
-    console.log('Adding task:', { title, description });
+    console.log('Adding task:', { title, description, priority, tags });
     setTitle('');
     setDescription('');
-    onTaskAdded(); // Notify parent component that a task was added
+    setPriority('');
+    setTags('');
+    onTaskAdded();
   };
 
   return (
@@ -36,6 +41,23 @@ export default function AddTaskForm({ onTaskAdded }: AddTaskFormProps) {
         rows={3}
         className="p-2 border border-gray-300 rounded-md text-black"
       ></textarea>
+      <select
+        value={priority}
+        onChange={(e) => setPriority(e.target.value as Priority)}
+        className="p-2 border border-gray-300 rounded-md text-black"
+      >
+        <option value="">Select Priority (Optional)</option>
+        <option value={Priority.LOW}>Low</option>
+        <option value={Priority.MEDIUM}>Medium</option>
+        <option value={Priority.HIGH}>High</option>
+      </select>
+      <input
+        type="text"
+        placeholder="Tags (comma-separated, e.g., work, urgent)"
+        value={tags}
+        onChange={(e) => setTags(e.target.value)}
+        className="p-2 border border-gray-300 rounded-md text-black"
+      />
       <button
         type="submit"
         className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"

@@ -1,9 +1,9 @@
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlmodel import Session, select
+from sqlmodel import Session, select, func, asc, desc # Import func, asc, desc
 
 from src.db import get_session
-from src.models.task import Task
+from src.models.task import Task, Priority 
 from src.models.user import User
 from src.api.dependencies import get_current_user
 
@@ -18,8 +18,46 @@ def create_task(task: Task, current_user: User = Depends(get_current_user), db: 
     return task
 
 @router.get("/tasks/", response_model=List[Task])
-def read_tasks(current_user: User = Depends(get_current_user), db: Session = Depends(get_session)):
-    tasks = db.exec(select(Task).where(Task.user_id == current_user.id)).all()
+def read_tasks(
+    current_user: User = Depends(get_current_user), 
+    db: Session = Depends(get_session),
+    search: Optional[str] = None, 
+    is_completed: Optional[bool] = None, 
+    priority: Optional[Priority] = None, 
+    tag: Optional[str] = None,
+    sort_by: Optional[str] = None, # Added sort_by parameter
+    order: Optional[str] = "asc" # Added order parameter (asc/desc)
+):
+    query = select(Task).where(Task.user_id == current_user.id)
+    if search:
+        query = query.where(func.lower(Task.title).contains(func.lower(search)))
+    
+    if is_completed is not None:
+        query = query.where(Task.is_completed == is_completed)
+    
+    if priority:
+        query = query.where(Task.priority == priority)
+    
+    if tag:
+        query = query.where(func.lower(Task.tags).contains(func.lower(tag)))
+    
+    # Sorting logic
+    if sort_by:
+        sort_column = None
+        if sort_by == "priority":
+            # Sorting by ENUM might require a cast or specific logic
+            sort_column = Task.priority
+        elif sort_by == "title":
+            sort_column = Task.title
+        # Add other sortable columns here (e.g., due_date, created_at)
+
+        if sort_column:
+            if order == "desc":
+                query = query.order_by(desc(sort_column))
+            else:
+                query = query.order_by(asc(sort_column))
+
+    tasks = db.exec(query).all()
     return tasks
 
 @router.get("/tasks/{task_id}", response_model=Task)
