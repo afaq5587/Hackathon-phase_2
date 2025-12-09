@@ -29,8 +29,12 @@ export interface User {
     email: string;
 }
 
+// Updated AuthResponse to match Better Auth's session structure
 export interface AuthResponse {
-    access_token: string;
-    token_type: string;
-    user: User;
+    token: string; // The JWT token
+    user: {
+        id: string; // Better Auth user ID is typically a string
+        email: string;
+    };
+    // token_type is implied as 'bearer'
 }

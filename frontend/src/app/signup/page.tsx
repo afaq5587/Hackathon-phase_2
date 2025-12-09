@@ -2,19 +2,19 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { registerUser } from '../../services/api'; // Import the API function
+import { signUp } from '../../lib/auth-client'; // Import signUp from auth-client
 
 export default function SignupPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null); // State for error messages
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null); // Clear previous errors
+    setError(null);
     try {
-      await registerUser(email, password);
+      await signUp({ email, password }); // Use signUp from authClient
       alert('Registration successful! Please log in.');
       router.push('/login');
     } catch (err: any) {

@@ -99,26 +99,33 @@
 - [X] T055 Configure production environment variables.
 - [X] T056 Final review of the deployed application against the Constitution and `spec.md`.
 
-## Refactor Phase: Better Auth Integration
+## Refactor Phase: Better Auth Integration (JWT Approach)
 
-**Goal**: Replace the existing custom JWT authentication system with Better Auth for user registration, login, and token management in both backend and frontend.
+**Goal**: Integrate Better Auth by configuring it to issue JWT tokens from the frontend, and update the FastAPI backend to validate these tokens for API request authorization.
 
-**Backend Tasks:**
+**Backend Tasks (FastAPI):**
 
 - [X] T057 Remove `backend/src/services/auth.py`.
 - [X] T058 Remove `backend/src/services/auth_service.py`.
 - [X] T059 Modify `backend/main.py` to remove custom auth imports, `/token`, and `/register` endpoints.
-- [X] T060 Update `backend/src/models/user.py` to remove `hashed_password` and adjust for Better Auth's user ID (if applicable).
+- [X] T060 Update `backend/src/models/user.py` to remove `hashed_password` and adjust for Better Auth's user ID (if applicable, change `id` to `str`).
 - [X] T061 Generate new Alembic migration for `User` model changes.
-- [ ] T062 Install Better Auth Python SDK (or implement direct API calls).
-- [ ] T063 Implement Better Auth registration logic in a new `/register` endpoint in `backend/main.py`.
-- [ ] T064 Implement Better Auth login logic in a new `/token` endpoint in `backend/main.py`.
-- [ ] T065 Update `backend/src/api/dependencies.py` to use Better Auth token validation and user retrieval.
+- [X] T062 (New) Update `backend/src/api/dependencies.py` to:
+    -   Import `jwt` from `jose` and `BETTER_AUTH_SECRET` from environment.
+    -   Implement `get_current_user` to decode and verify Better Auth's JWT token.
+    -   Extract user ID from the validated token and use it to fetch the `User` from the database.
+- [X] T063 (New) Update `backend/main.py` if necessary for any new global dependencies or startup events related to Better Auth JWT. (Likely not needed, dependency handles it).
 
-**Frontend Tasks:**
+**Frontend Tasks (Next.js):**
 
-- [ ] T066 Install Better Auth JavaScript SDK (if available).
-- [ ] T067 Modify `frontend/src/services/api.ts` to use Better Auth for `loginUser` and `registerUser`.
-- [ ] T068 Modify `frontend/src/context/AuthContext.tsx` to integrate with Better Auth's authentication state.
-- [ ] T069 Modify `frontend/src/app/signup/page.tsx` to use Better Auth registration.
-- [ ] T070 Modify `frontend/src/app/login/page.tsx` to use Better Auth login.
+- [X] T064 (New) Install Better Auth SDK: `npm install better-auth`.
+- [X] T065 (New) Configure Better Auth in `frontend/src/lib/auth.ts` (or similar path) to:
+    -   Use the database (e.g., PostgreSQL client).
+    -   Enable `emailAndPassword`.
+    -   Configure JWT token issuance.
+- [X] T066 (New) Mount Better Auth handler: Create `frontend/src/app/api/auth/[...all]/route.ts` using `toNextJsHandler`.
+- [X] T067 (New) Create Better Auth client: `frontend/src/lib/auth-client.ts` using `createAuthClient`.
+- [X] T068 (New) Modify `frontend/src/services/api.ts` to use Better Auth client for `loginUser` and `registerUser`.
+- [X] T069 (New) Modify `frontend/src/context/AuthContext.tsx` to integrate with Better Auth client's session management.
+- [X] T070 (New) Modify `frontend/src/app/signup/page.tsx` to use Better Auth client registration.
+- [X] T071 (New) Modify `frontend/src/app/login/page.tsx` to use Better Auth client login.

@@ -1,4 +1,5 @@
 import { Task, AuthResponse, User, Priority } from './types';
+import { signIn, signUp } from '../lib/auth-client'; // Import signIn, signUp from auth-client
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1';
 
@@ -23,15 +24,13 @@ async function callApi<T>(
 
   if (!response.ok) {
     if (response.status === 401) {
-      // Handle unauthorized specifically, e.g., redirect to login
       console.error("Unauthorized API call. Redirecting to login.");
-      // You might want to implement a proper redirect here, or clear token
     }
     const errorData = await response.json();
     throw new Error(errorData.detail || `API Error: ${response.statusText}`);
   }
 
-  if (response.status === 204) { // No Content for successful deletes
+  if (response.status === 204) {
     return null as T; 
   }
   return response.json();
@@ -39,39 +38,31 @@ async function callApi<T>(
 
 // Authentication
 export async function loginUser(email: string, password: string): Promise<AuthResponse> {
-  const form = new URLSearchParams();
-  form.append("username", email);
-  form.append("password", password);
-
-  const response = await fetch(`http://127.0.0.1:8000/token`, { // Use absolute path for /token
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: form.toString(),
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.detail || `Login failed: ${response.statusText}`);
+  try {
+    const session = await signIn({ email, password });
+    if (!session || !session.user || !session.token) {
+        throw new Error("Login failed: No session or token received.");
+    }
+    return {
+        access_token: session.token,
+        token_type: "bearer",
+        user: { id: session.user.id, email: session.user.email } // Map to our User type
+    };
+  } catch (error: any) {
+    throw new Error(error.message || "Login failed.");
   }
-  return response.json();
 }
 
 export async function registerUser(email: string, password: string): Promise<User> {
-    const response = await fetch(`http://127.0.0.1:8000/register`, { // Use absolute path for /register
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-    });
-
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.detail || `Registration failed: ${response.statusText}`);
+    try {
+        const result = await signUp({ email, password });
+        if (!result.user) {
+            throw new Error("Registration failed: No user received.");
+        }
+        return { id: result.user.id, email: result.user.email }; // Map to our User type
+    } catch (error: any) {
+        throw new Error(error.message || "Registration failed.");
     }
-    return response.json();
 }
 
 // Task CRUD Operations

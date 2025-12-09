@@ -2,23 +2,26 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { loginUser } from '../../services/api'; // Import the API function
-import { useAuth } from '../../context/AuthContext'; // Import useAuth hook
+import { signIn } from '../../lib/auth-client'; // Import signIn from auth-client
+import { useAuth } from '../../context/AuthContext';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null); // State for error messages
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const { login } = useAuth(); // Use the login function from AuthContext
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null); // Clear previous errors
+    setError(null);
     try {
-      const response = await loginUser(email, password);
-      login(response.access_token, response.user.email); // Store token and user info
-      router.push('/tasks'); // Redirect to tasks page on successful login
+      const session = await signIn({ email, password }); // Use signIn from authClient
+      if (!session || !session.user || !session.token) {
+        throw new Error("Login failed: No session or token received.");
+      }
+      login(session.token, session.user.id, session.user.email); // Store token and user info
+      router.push('/tasks');
     } catch (err: any) {
       setError(err.message || 'Login failed');
     }
