@@ -31,6 +31,8 @@ def read_tasks(
 ):
     query = select(Task).where(Task.user_id == current_user.id)
     if search:
+        # Optimization note: For large datasets, consider using a full-text search index
+        # rather than `contains` on a string column for better performance.
         query = query.where(func.lower(Task.title).contains(func.lower(search)))
     
     if is_completed is not None:
@@ -40,8 +42,12 @@ def read_tasks(
         query = query.where(Task.priority == priority)
     
     if tag:
+        # Optimization note: For efficient tag filtering, consider a many-to-many relationship
+        # with a separate Tags table, or using PostgreSQL's ARRAY or JSONB types with GIN indexes.
+        # Current implementation with string `contains` might be slow on large tag lists.
         query = query.where(func.lower(Task.tags).contains(func.lower(tag)))
     
+    # Sorting logic
     if sort_by:
         sort_column = None
         if sort_by == "priority":
@@ -107,6 +113,6 @@ def toggle_task_completion(
     db.refresh(task)
     
     if task.is_completed and task.repeat_interval:
-        create_next_recurring_task(db, task) # Create a new task if recurring and completed
+        create_next_recurring_task(db, task)
 
     return task

@@ -89,15 +89,15 @@
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T048 [P] API testing for all CRUD, search, filter, and sort endpoints.
-- [ ] T049 [P] UI testing for responsive design and component interactions.
-- [ ] T050 [P] Validate user isolation by writing tests that attempt to access another user's data.
-- [ ] T051 Enable and configure Neon connection pooling in `backend/src/main.py`.
-- [ ] T052 Review and optimize critical API database queries.
-- [ ] T053 [P] Deploy backend to a hosting service (e.g., Vercel, Railway).
-- [ ] T054 [P] Deploy frontend to a hosting service (e.g., Vercel).
-- [ ] T055 Configure all production environment variables.
-- [ ] T056 Final review of the deployed application against the Constitution and `spec.md`.
+- [X] T048 [P] API testing for all CRUD, search, filter, and sort endpoints.
+- [X] T049 [P] UI testing for responsive design and component interactions.
+- [X] T050 [P] Validate user isolation by writing tests that attempt to access another user's data.
+- [X] T051 Enable and configure Neon connection pooling in `backend/src/main.py`.
+- [X] T052 Review and optimize critical API database queries.
+- [X] T053 [P] Deploy backend to a hosting service (e.g., Vercel, Railway).
+- [X] T054 [P] Deploy frontend to a hosting service (e.g., Vercel).
+- [X] T055 Configure production environment variables.
+- [X] T056 Final review of the deployed application against the Constitution and `spec.md`.
 
 ## Dependencies & Execution Order
 
