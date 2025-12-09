@@ -23,12 +23,12 @@
 
 - [X] T009 Define `User` model in `backend/src/models/user.py`.
 - [X] T010 Define base `Task` model in `backend/src/models/task.py`.
-- [ ] T011 Generate and apply initial Alembic migration for User and Task tables in `backend/db/migrations/`.
+- [X] T011 Generate and apply initial Alembic migration for User and Task tables in `backend/db/migrations/`.
 - [X] T012 Implement JWT token generation and validation logic in `backend/src/services/auth.py`.
 - [X] T013 Create reusable dependency for authenticating users on protected endpoints in `backend/src/api/dependencies.py`.
-- [ ] T014 [P] Build basic signup page UI in `frontend/src/app/signup/page.tsx`.
-- [ ] T015 [P] Build basic login page UI in `frontend/src/app/login/page.tsx`.
-- [ ] T016 Implement auth state management (e.g., React Context) in `frontend/src/context/AuthContext.tsx`.
+- [X] T014 [P] Build basic signup page UI in `frontend/src/app/signup/page.tsx`.
+- [X] T015 [P] Build basic login page UI in `frontend/src/app/login/page.tsx`.
+- [X] T016 Implement auth state management (e.g., React Context) in `frontend/src/context/AuthContext.tsx`.
 
 ---
 
