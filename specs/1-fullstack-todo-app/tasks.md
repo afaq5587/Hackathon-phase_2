@@ -77,13 +77,13 @@
 **Goal**: Allow users to set due dates, create recurring tasks, and receive reminders.
 **Independent Test**: A user can set a due date and a weekly recurrence for a task, and receive a browser notification at a specified time.
 
-- [ ] T041 [US3] Extend `Task` model in `backend/src/models/task.py` to include `due_date` (DateTime) and `repeat_interval` (Enum).
-- [ ] T042 [US3] Generate and apply Alembic migration for new Task fields.
-- [ ] T043 [US3] Implement logic for recurring tasks (e.g., a background job or a post-completion hook) in `backend/src/services/tasks.py`.
-- [ ] T044 [P] [US3] Add date-time picker component to task creation/edit forms in `frontend/src/components/`.
-- [ ] T045 [P] [US3] Add recurrence selection UI (e.g., dropdown for daily/weekly) to task forms in `frontend/src/components/`.
-- [ ] T046 [P] [US3] Add reminder setup UI (e.g., time input) to task forms in `frontend/src/components/`.
-- [ ] T047 [US3] Implement frontend logic to trigger browser notifications using the Web Notifications API in `frontend/src/services/notifications.ts`.
+- [X] T041 [US3] Extend `Task` model in `backend/src/models/task.py` to include `due_date` (DateTime) and `repeat_interval` (Enum).
+- [X] T042 [US3] Generate and apply Alembic migration for new Task fields.
+- [X] T043 [US3] Implement logic for recurring tasks (e.g., a background job or a post-completion hook) in `backend/src/services/tasks.py`.
+- [X] T044 [P] [US3] Add date-time picker component to task creation/edit forms in `frontend/src/components/`.
+- [X] T045 [P] [US3] Add recurrence selection UI (e.g., dropdown for daily/weekly) to task forms in `frontend/src/components/`.
+- [X] T046 [P] [US3] Add reminder setup UI (e.g., time input) to task forms in `frontend/src/components/`.
+- [X] T047 [US3] Implement frontend logic to trigger browser notifications using the Web Notifications API in `frontend/src/services/notifications.ts`.
 
 ---
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Priority } from '../services/types';
+import { Priority, RepeatInterval } from '../services/types';
 
 interface AddTaskFormProps {
   onTaskAdded: () => void;
@@ -11,16 +11,21 @@ export default function AddTaskForm({ onTaskAdded }: AddTaskFormProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState<Priority | ''>('');
-  const [tags, setTags] = useState(''); // State for tags
+  const [tags, setTags] = useState('');
+  const [dueDate, setDueDate] = useState('');
+  const [repeatInterval, setRepeatInterval] = useState<RepeatInterval | ''>('');
+  const [reminderTime, setReminderTime] = useState(''); // State for reminder time
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Logic to add task via API will go here
-    console.log('Adding task:', { title, description, priority, tags });
+    console.log('Adding task:', { title, description, priority, tags, dueDate, repeatInterval, reminderTime });
     setTitle('');
     setDescription('');
     setPriority('');
     setTags('');
+    setDueDate('');
+    setRepeatInterval('');
+    setReminderTime('');
     onTaskAdded();
   };
 
@@ -56,6 +61,30 @@ export default function AddTaskForm({ onTaskAdded }: AddTaskFormProps) {
         placeholder="Tags (comma-separated, e.g., work, urgent)"
         value={tags}
         onChange={(e) => setTags(e.target.value)}
+        className="p-2 border border-gray-300 rounded-md text-black"
+      />
+      <input
+        type="datetime-local"
+        placeholder="Due Date (Optional)"
+        value={dueDate}
+        onChange={(e) => setDueDate(e.target.value)}
+        className="p-2 border border-gray-300 rounded-md text-black"
+      />
+      <select
+        value={repeatInterval}
+        onChange={(e) => setRepeatInterval(e.target.value as RepeatInterval)}
+        className="p-2 border border-gray-300 rounded-md text-black"
+      >
+        <option value="">Repeat (Optional)</option>
+        <option value={RepeatInterval.DAILY}>Daily</option>
+        <option value={RepeatInterval.WEEKLY}>Weekly</option>
+        <option value={RepeatInterval.MONTHLY}>Monthly</option>
+      </select>
+      <input
+        type="time"
+        placeholder="Reminder Time (Optional)"
+        value={reminderTime}
+        onChange={(e) => setReminderTime(e.target.value)}
         className="p-2 border border-gray-300 rounded-md text-black"
       />
       <button

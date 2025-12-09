@@ -1,11 +1,12 @@
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlmodel import Session, select, func, asc, desc # Import func, asc, desc
+from sqlmodel import Session, select, func, asc, desc
 
 from src.db import get_session
 from src.models.task import Task, Priority 
 from src.models.user import User
 from src.api.dependencies import get_current_user
+from src.services.tasks import create_next_recurring_task # Import recurring task logic
 
 router = APIRouter()
 
@@ -25,8 +26,8 @@ def read_tasks(
     is_completed: Optional[bool] = None, 
     priority: Optional[Priority] = None, 
     tag: Optional[str] = None,
-    sort_by: Optional[str] = None, # Added sort_by parameter
-    order: Optional[str] = "asc" # Added order parameter (asc/desc)
+    sort_by: Optional[str] = None, 
+    order: Optional[str] = "asc" 
 ):
     query = select(Task).where(Task.user_id == current_user.id)
     if search:
@@ -41,15 +42,14 @@ def read_tasks(
     if tag:
         query = query.where(func.lower(Task.tags).contains(func.lower(tag)))
     
-    # Sorting logic
     if sort_by:
         sort_column = None
         if sort_by == "priority":
-            # Sorting by ENUM might require a cast or specific logic
             sort_column = Task.priority
         elif sort_by == "title":
             sort_column = Task.title
-        # Add other sortable columns here (e.g., due_date, created_at)
+        elif sort_by == "due_date":
+            sort_column = Task.due_date
 
         if sort_column:
             if order == "desc":
@@ -105,4 +105,8 @@ def toggle_task_completion(
     db.add(task)
     db.commit()
     db.refresh(task)
+    
+    if task.is_completed and task.repeat_interval:
+        create_next_recurring_task(db, task) # Create a new task if recurring and completed
+
     return task
