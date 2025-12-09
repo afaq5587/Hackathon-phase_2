@@ -13,10 +13,10 @@ class UserCreate(UserBase):
 
 class User(UserBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    hashed_password: str
+    # hashed_password: str # Removed as Better Auth will handle this externally
 
     tasks: List["Task"] = Relationship(back_populates="user")
 
-# For responses, exclude hashed_password
+# For responses, exclude hashed_password (no longer applicable)
 class UserResponse(UserBase):
     id: int
