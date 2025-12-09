@@ -6,14 +6,14 @@
 
 **Purpose**: Project initialization and basic structure.
 
-- [ ] T001 [P] Initialize FastAPI backend project in `backend/`.
-- [ ] T002 [P] Initialize Next.js (App Router) project in `frontend/`.
-- [ ] T003 Configure Neon PostgreSQL connection details in `backend/.env`.
-- [ ] T004 [P] Set up SQLModel for ORM in `backend/src/models/`.
-- [ ] T005 [P] Install and configure Alembic for migrations in `backend/db/`.
-- [ ] T006 [P] Integrate Better Auth for email/password auth in `backend/src/services/auth.py`.
-- [ ] T007 [P] Create shared `.env` structure for frontend and backend.
-- [ ] T008 [P] Establish clean folder structure for `backend/`, `frontend/`, and `db/` as per `plan.md`.
+- [X] T001 [P] Initialize FastAPI backend project in `backend/`.
+- [X] T002 [P] Initialize Next.js (App Router) project in `frontend/`.
+- [X] T003 Configure Neon PostgreSQL connection details in `backend/.env`.
+- [X] T004 [P] Set up SQLModel for ORM in `backend/src/models/`.
+- [X] T005 [P] Install and configure Alembic for migrations in `backend/db/`.
+- [X] T006 [P] Integrate Better Auth for email/password auth in `backend/src/services/auth.py`.
+- [X] T007 [P] Create shared `.env` structure for frontend and backend.
+- [X] T008 [P] Establish clean folder structure for `backend/`, `frontend/`, and `db/` as per `plan.md`.
 
 ---
 
@@ -21,11 +21,11 @@
 
 **Purpose**: Core infrastructure that MUST be complete before ANY user story can be implemented.
 
-- [ ] T009 Define `User` model in `backend/src/models/user.py`.
-- [ ] T010 Define base `Task` model in `backend/src/models/task.py`.
+- [X] T009 Define `User` model in `backend/src/models/user.py`.
+- [X] T010 Define base `Task` model in `backend/src/models/task.py`.
 - [ ] T011 Generate and apply initial Alembic migration for User and Task tables in `backend/db/migrations/`.
-- [ ] T012 Implement JWT token generation and validation logic in `backend/src/services/auth.py`.
-- [ ] T013 Create reusable dependency for authenticating users on protected endpoints in `backend/src/api/dependencies.py`.
+- [X] T012 Implement JWT token generation and validation logic in `backend/src/services/auth.py`.
+- [X] T013 Create reusable dependency for authenticating users on protected endpoints in `backend/src/api/dependencies.py`.
 - [ ] T014 [P] Build basic signup page UI in `frontend/src/app/signup/page.tsx`.
 - [ ] T015 [P] Build basic login page UI in `frontend/src/app/login/page.tsx`.
 - [ ] T016 Implement auth state management (e.g., React Context) in `frontend/src/context/AuthContext.tsx`.
