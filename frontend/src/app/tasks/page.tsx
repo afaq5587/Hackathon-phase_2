@@ -1,16 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react'; // Added useState
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import AddTaskForm from '../../components/AddTaskForm';
-import TaskList from '../../components/TaskList'; // Added import
-import { Task } from '../../services/types'; // Added import
+import TaskList from '../../components/TaskList';
+import { Task } from '../../services/types';
 
 export default function TasksPage() {
   const { token, logout } = useAuth();
   const router = useRouter();
-  const [tasks, setTasks] = useState<Task[]>([]); // State for tasks
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   useEffect(() => {
     if (!token) {
@@ -42,20 +42,24 @@ export default function TasksPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center p-24">
-      <h1 className="text-4xl font-bold mb-8">Your Tasks</h1>
-      <button onClick={logout} className="mb-8 p-2 bg-red-500 text-white rounded-md hover:bg-red-600">
-        Logout
-      </button>
+    <div className="min-h-screen flex flex-col items-center py-8 px-4 sm:px-6 lg:px-8"> {/* Added responsive padding */}
+      <div className="w-full max-w-2xl"> {/* Increased max-width for better desktop use */}
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold">Your Tasks</h1>
+          <button onClick={logout} className="p-2 bg-red-500 text-white rounded-md hover:bg-red-600 text-sm">
+            Logout
+          </button>
+        </div>
 
-      <div className="mb-8 w-full max-w-lg">
-        <h2 className="text-2xl font-semibold mb-4">Add New Task</h2>
-        <AddTaskForm onTaskAdded={handleTaskAdded} />
-      </div>
+        <div className="mb-8 w-full">
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4">Add New Task</h2>
+          <AddTaskForm onTaskAdded={handleTaskAdded} />
+        </div>
 
-      <div className="w-full max-w-lg">
-        <h2 className="text-2xl font-semibold mb-4">Task List</h2>
-        <TaskList tasks={tasks} onTaskUpdated={handleTaskUpdated} onTaskDeleted={handleTaskDeleted} />
+        <div className="w-full">
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4">Task List</h2>
+          <TaskList tasks={tasks} onTaskUpdated={handleTaskUpdated} onTaskDeleted={handleTaskDeleted} />
+        </div>
       </div>
     </div>
   );

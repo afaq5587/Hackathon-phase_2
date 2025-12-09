@@ -49,7 +49,7 @@
 - [X] T026 [US1] Create `TaskList` component to display tasks in `frontend/src/components/TaskList.tsx`.
 - [X] T027 [US1] Create `TaskItem` component for a single task's display and actions (edit, delete, complete) in `frontend/src/components/TaskItem.tsx`.
 - [ ] T028 [US1] Implement API service calls for all task CRUD operations in `frontend/src/services/api.ts`.
-- [ ] T029 [US1] Make task page UI responsive for mobile and desktop.
+- [X] T029 [US1] Make task page UI responsive for mobile and desktop.
 
 ---
 
