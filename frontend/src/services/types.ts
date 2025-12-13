@@ -11,11 +11,11 @@ export enum RepeatInterval {
 }
 
 export interface Task {
-    id: number;
+    id: number; // Task ID is likely still auto-inc int, check backend model
     title: string;
     description?: string;
     is_completed: boolean;
-    user_id: number;
+    user_id: string; // Changed to string
     priority?: Priority;
     tags?: string; 
     due_date?: string; // ISO format datetime string
@@ -25,16 +25,17 @@ export interface Task {
 }
 
 export interface User {
-    id: number;
+    id: string; // Changed to string
     email: string;
 }
 
 // Updated AuthResponse to match Better Auth's session structure
+// Updated AuthResponse to match API return type
 export interface AuthResponse {
-    token: string; // The JWT token
+    access_token: string;
+    token_type: string;
     user: {
-        id: string; // Better Auth user ID is typically a string
+        id: string; 
         email: string;
     };
-    // token_type is implied as 'bearer'
 }

@@ -17,9 +17,13 @@ async function callApi<T>(
   const config: RequestInit = {
     method,
     headers,
+    credentials: 'include', // Ensure cookies are sent
     body: body ? JSON.stringify(body) : undefined,
   };
 
+  console.log(`API Call: ${method} ${API_BASE_URL}${endpoint}`);
+  console.log('Token present:', !!token);
+  
   const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
 
   if (!response.ok) {
@@ -39,14 +43,16 @@ async function callApi<T>(
 // Authentication
 export async function loginUser(email: string, password: string): Promise<AuthResponse> {
   try {
-    const session = await signIn({ email, password });
-    if (!session || !session.user || !session.token) {
-        throw new Error("Login failed: No session or token received.");
+    const { data, error } = await signIn.email({ email, password });
+    
+    if (error) throw new Error(error.message);
+    if (!data || !data.user) {
+        throw new Error("Login failed: No user received.");
     }
     return {
-        access_token: session.token,
+        access_token: data.token || "cookie-session", // Fallback if token is hidden
         token_type: "bearer",
-        user: { id: session.user.id, email: session.user.email } // Map to our User type
+        user: { id: data.user.id, email: data.user.email }
     };
   } catch (error: any) {
     throw new Error(error.message || "Login failed.");
@@ -55,11 +61,13 @@ export async function loginUser(email: string, password: string): Promise<AuthRe
 
 export async function registerUser(email: string, password: string): Promise<User> {
     try {
-        const result = await signUp({ email, password });
-        if (!result.user) {
+        const { data, error } = await signUp.email({ email, password, name: email.split('@')[0] });
+        
+        if (error) throw new Error(error.message);
+        if (!data || !data.user) {
             throw new Error("Registration failed: No user received.");
         }
-        return { id: result.user.id, email: result.user.email }; // Map to our User type
+        return { id: data.user.id, email: data.user.email };
     } catch (error: any) {
         throw new Error(error.message || "Registration failed.");
     }

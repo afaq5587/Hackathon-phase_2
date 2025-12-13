@@ -1,22 +1,58 @@
+from datetime import datetime
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session, select, func, asc, desc
 
 from src.db import get_session
-from src.models.task import Task, Priority 
+from src.models.task import Task, TaskCreate, Priority 
 from src.models.user import User
 from src.api.dependencies import get_current_user
-from src.services.tasks import create_next_recurring_task # Import recurring task logic
+from src.services.tasks import create_next_recurring_task
 
 router = APIRouter()
 
 @router.post("/tasks/", response_model=Task, status_code=status.HTTP_201_CREATED)
-def create_task(task: Task, current_user: User = Depends(get_current_user), db: Session = Depends(get_session)):
-    task.user_id = current_user.id
-    db.add(task)
-    db.commit()
-    db.refresh(task)
-    return task
+def create_task(task_in: TaskCreate, current_user: User = Depends(get_current_user), db: Session = Depends(get_session)):
+    try:
+        print(f"\n=== CREATE TASK DEBUG ===")
+        print(f"User ID: {current_user.id}")
+        print(f"User Email: {current_user.email}")
+        print(f"Incoming task data: {task_in.model_dump()}")
+        
+        # Create Task object with user_id included
+        task_data = task_in.model_dump()
+        task_data['user_id'] = current_user.id
+        
+        task = Task(**task_data)
+        
+        # Debugging: Check type of due_date
+        print(f"Task due_date type: {type(task.due_date)}, value: {task.due_date}")
+        
+        # Manual safeguard only if it's still a string (shouldn't be with TaskCreate)
+        if isinstance(task.due_date, str):
+            try:
+                task.due_date = datetime.fromisoformat(task.due_date)
+                print(f"Converted due_date from string to datetime: {task.due_date}")
+            except ValueError as e:
+                print(f"Failed to convert due_date: {e}")
+
+        db.add(task)
+        print("Task added to session")
+        
+        db.commit()
+        print("Task committed to database")
+        
+        db.refresh(task)
+        print(f"Task created successfully with ID: {task.id}")
+        print("=== END DEBUG ===\n")
+        
+        return task
+        
+    except Exception as e:
+        print(f"ERROR creating task: {type(e).__name__}: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Failed to create task: {str(e)}")
 
 @router.get("/tasks/", response_model=List[Task])
 def read_tasks(

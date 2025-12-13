@@ -1,52 +1,82 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'; // Added useEffect
-import { useSession } from '../lib/auth-client'; // Import useSession from auth-client
-
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useSession, signOut } from '../lib/auth-client';
+// Define the context shape
 interface AuthContextType {
   token: string | null;
-  user: { id: string; email: string } | null; // Updated user type
-  login: (token: string, userId: string, email: string) => void; // Updated login signature
+  user: { id: string; email: string } | null;
+  login: (token: string, userId: string, email: string) => void;
   logout: () => void;
-  isLoading: boolean; // Add isLoading state
+  isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const { session, isLoading, signOut } = useSession(); // Use Better Auth's useSession hook
+  const { data: sessionData, isPending: isLoading } = useSession(); 
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<{ id: string; email: string } | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (session && session.token && session.user) {
-      setToken(session.token);
-      setUser({ id: session.user.id, email: session.user.email });
-      // Store token securely (e.g., in localStorage or cookies)
-      localStorage.setItem('better_auth_token', session.token);
-      localStorage.setItem('better_auth_user_id', session.user.id);
-      localStorage.setItem('better_auth_user_email', session.user.email);
+    setMounted(true); // Set to true once component mounts on client
+  }, []);
+
+  useEffect(() => {
+    if (sessionData && sessionData.session) {
+      // Assuming sessionData structure is { session: { token, ... }, user: { ... } }
+      // But verify if token is inside sessionData.session or top level?
+      // Better Auth usually checks cookies. 
+      // If we need a token string, we try to get it.
+      // Let's assume sessionData.session.token exists or we fallback.
+      const sessionToken = sessionData.session.token || "cookie-session"; 
+      const sessionUser = sessionData.user;
+      
+      setToken(sessionToken);
+      setUser({ id: sessionUser.id, email: sessionUser.email });
+      
+      if (mounted) {
+        localStorage.setItem('better_auth_token', sessionToken);
+        localStorage.setItem('better_auth_user_id', sessionUser.id);
+        localStorage.setItem('better_auth_user_email', sessionUser.email);
+      }
     } else {
       setToken(null);
       setUser(null);
+      if (mounted) {
+        localStorage.removeItem('better_auth_token');
+        localStorage.removeItem('better_auth_user_id');
+        localStorage.removeItem('better_auth_user_email');
+      }
+    }
+  }, [sessionData, mounted]);
+
+  const login = (newToken: string, userId: string, email: string) => {
+    setToken(newToken);
+    setUser({ id: userId, email });
+    if (mounted) { // Only access localStorage on client after mounted
+      localStorage.setItem('better_auth_token', newToken);
+      localStorage.setItem('better_auth_user_id', userId);
+      localStorage.setItem('better_auth_user_email', email);
+    }
+  };
+
+  const logout = async () => {
+    await signOut();
+    setToken(null);
+    setUser(null);
+    if (mounted) {
       localStorage.removeItem('better_auth_token');
       localStorage.removeItem('better_auth_user_id');
       localStorage.removeItem('better_auth_user_email');
     }
-  }, [session]);
-
-  const login = (newToken: string, userId: string, email: string) => {
-    // This login is for external use if needed, but primary auth will be via Better Auth
-    setToken(newToken);
-    setUser({ id: userId, email });
-    localStorage.setItem('better_auth_token', newToken);
-    localStorage.setItem('better_auth_user_id', userId);
-    localStorage.setItem('better_auth_user_email', email);
+    // Optionally redirect to login or handle state clearing
   };
 
-  const logout = () => {
-    signOut(); // Use Better Auth's signOut
-  };
+  if (!mounted) { // Don't render children until component has mounted
+    return null;
+  }
 
   return (
     <AuthContext.Provider value={{ token, user, login, logout, isLoading }}>

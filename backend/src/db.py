@@ -8,18 +8,18 @@ load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-# Configure connection pooling
-# These values are examples and might need tuning based on Neon's recommendations
-# and application load.
-# Neon often handles pooling externally with PgBouncer, but for direct connections,
-# SQLAlchemy's internal pooling can be configured.
-engine = create_engine(
-    DATABASE_URL, 
-    echo=True,
-    pool_size=10,        # Max number of connections in the pool
-    max_overflow=10,     # Max number of connections that can be opened beyond pool_size
-    pool_recycle=3600    # Recycle connections after 1 hour to prevent stale connections
-)
+if "sqlite" in DATABASE_URL:
+    connect_args = {"check_same_thread": False}
+    engine = create_engine(DATABASE_URL, echo=True, connect_args=connect_args)
+else:
+    # Postgres configuration
+    engine = create_engine(
+        DATABASE_URL, 
+        echo=True,
+        pool_size=10,
+        max_overflow=10,
+        pool_recycle=3600
+    )
 
 
 def get_session() -> Generator:

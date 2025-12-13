@@ -15,15 +15,28 @@ class RepeatInterval(str, Enum):
     WEEKLY = "weekly"
     MONTHLY = "monthly"
 
-class Task(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
+class TaskBase(SQLModel):
     title: str
     description: Optional[str] = None
     is_completed: bool = False
     priority: Optional[Priority] = Field(default=None)
-    tags: Optional[str] = Field(default=None) # Changed to string
-    due_date: Optional[datetime] = Field(default=None) # Added due_date
-    repeat_interval: Optional[RepeatInterval] = Field(default=None) # Added repeat_interval
+    tags: Optional[str] = Field(default=None)
+    due_date: Optional[datetime] = Field(default=None)
+    repeat_interval: Optional[RepeatInterval] = Field(default=None)
 
-    user_id: Optional[int] = Field(default=None, foreign_key="user.id")
+class Task(TaskBase, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    user_id: str = Field(foreign_key="user.id")
     user: Optional["User"] = Relationship(back_populates="tasks")
+
+class TaskCreate(TaskBase):
+    pass
+
+class TaskUpdate(SQLModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    is_completed: Optional[bool] = None
+    priority: Optional[Priority] = None
+    tags: Optional[str] = None
+    due_date: Optional[datetime] = None
+    repeat_interval: Optional[RepeatInterval] = None
