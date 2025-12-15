@@ -1,7 +1,7 @@
 import { Task, AuthResponse, User, Priority } from './types';
 import { signIn, signUp } from '../lib/auth-client'; // Import signIn, signUp from auth-client
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://betterauth-three.vercel.app/api/v1';
 
 async function callApi<T>(
   endpoint: string,

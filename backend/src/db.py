@@ -10,12 +10,12 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 
 if "sqlite" in DATABASE_URL:
     connect_args = {"check_same_thread": False}
-    engine = create_engine(DATABASE_URL, echo=True, connect_args=connect_args)
+    engine = create_engine(DATABASE_URL, echo=False, connect_args=connect_args)
 else:
     # Postgres configuration
     engine = create_engine(
         DATABASE_URL, 
-        echo=True,
+        echo=False,
         pool_size=10,
         max_overflow=10,
         pool_recycle=3600

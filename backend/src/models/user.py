@@ -1,4 +1,5 @@
 from typing import List, Optional
+from datetime import datetime
 
 from sqlmodel import Field, Relationship, SQLModel
 
@@ -12,9 +13,13 @@ class UserCreate(UserBase):
 
 
 class User(UserBase, table=True):
-    id: str = Field(primary_key=True) # Changed to String for Better Auth compatibility
-    # hashed_password: str # Removed as Better Auth will handle this externally
-
+    id: str = Field(primary_key=True)
+    name: Optional[str] = None
+    emailVerified: bool = False
+    image: Optional[str] = None
+    createdAt: datetime = Field(default_factory=datetime.utcnow)
+    updatedAt: datetime = Field(default_factory=datetime.utcnow)
+    
     tasks: List["Task"] = Relationship(back_populates="user")
 
 # For responses, exclude hashed_password (no longer applicable)
