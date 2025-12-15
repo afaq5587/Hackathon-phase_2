@@ -1,8 +1,7 @@
 <!--
 Sync Impact Report:
-- Version change: 0.0.0 → 1.0.0
+- Version change: 1.0.0 → 2.0.0
 - Added principles:
-  - Spec-Driven Development
   - Clarity & Modularity
   - Type Safety & Validation
   - Consistency
@@ -25,6 +24,9 @@ Sync Impact Report:
 All features, endpoints, data models, and UI workflows must originate from explicit specifications.
 No coding begins until a complete spec is approved.
 All agents must follow the Constitution strictly.
+
+### Agent-Based Components & Reusable Intelligence
+New features can be conceptualized as "Agents" or "Skills" to promote modularity and reuse. Each Agent should be defined by a structured set of artifacts (`spec.md`, `plan.md`, `tasks.md`, `skills.md`) in a dedicated directory (e.g., `.gemini/skills/better-auth`). This ensures project knowledge is formally documented and creates a library of reusable intelligence.
 
 ### Clarity & Modularity
 Keep backend, frontend, DB models, and auth flows strictly separated.
@@ -81,4 +83,4 @@ Advanced Level
 ## Governance
 All PRs/reviews must verify compliance. Complexity must be justified.
 
-**Version**: 1.0.0 | **Ratified**: 2025-12-08 | **Last Amended**: 2025-12-08
+**Version**: 2.0.0 | **Ratified**: 2025-12-08 | **Last Amended**: 2025-12-15
