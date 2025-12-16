@@ -29,7 +29,7 @@ export default function LoginPage() {
         throw new Error("Login failed: No user received.");
       }
       
-      login(data.token || "cookie-session", data.user.id, data.user.email); 
+      login(data.token || "cookie-session", data.user.id, data.user.email, data.user.name || null); 
       router.push('/tasks');
     } catch (err: any) {
       setError(err.message || 'Login failed');

@@ -5,8 +5,8 @@ import { useSession, signOut } from '../lib/auth-client';
 // Define the context shape
 interface AuthContextType {
   token: string | null;
-  user: { id: string; email: string } | null;
-  login: (token: string, userId: string, email: string) => void;
+  user: { id: string; email: string; name: string | null } | null;
+  login: (token: string, userId: string, email: string, name: string | null) => void;
   logout: () => void;
   isLoading: boolean;
 }
@@ -16,7 +16,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const { data: sessionData, isPending: isLoading } = useSession(); 
   const [token, setToken] = useState<string | null>(null);
-  const [user, setUser] = useState<{ id: string; email: string } | null>(null);
+  const [user, setUser] = useState<{ id: string; email: string; name: string | null } | null>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -34,12 +34,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const sessionUser = sessionData.user;
       
       setToken(sessionToken);
-      setUser({ id: sessionUser.id, email: sessionUser.email });
+      setUser({ id: sessionUser.id, email: sessionUser.email, name: sessionUser.name || null });
       
       if (mounted) {
         localStorage.setItem('better_auth_token', sessionToken);
         localStorage.setItem('better_auth_user_id', sessionUser.id);
         localStorage.setItem('better_auth_user_email', sessionUser.email);
+        if (sessionUser.name) localStorage.setItem('better_auth_user_name', sessionUser.name);
       }
     } else {
       setToken(null);
@@ -48,17 +49,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.removeItem('better_auth_token');
         localStorage.removeItem('better_auth_user_id');
         localStorage.removeItem('better_auth_user_email');
+        localStorage.removeItem('better_auth_user_name');
       }
     }
   }, [sessionData, mounted]);
 
-  const login = (newToken: string, userId: string, email: string) => {
+  const login = (newToken: string, userId: string, email: string, name: string | null) => {
     setToken(newToken);
-    setUser({ id: userId, email });
+    setUser({ id: userId, email, name });
     if (mounted) { // Only access localStorage on client after mounted
       localStorage.setItem('better_auth_token', newToken);
       localStorage.setItem('better_auth_user_id', userId);
       localStorage.setItem('better_auth_user_email', email);
+      if (name) localStorage.setItem('better_auth_user_name', name);
     }
   };
 
@@ -70,6 +73,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.removeItem('better_auth_token');
       localStorage.removeItem('better_auth_user_id');
       localStorage.removeItem('better_auth_user_email');
+      localStorage.removeItem('better_auth_user_name');
     }
     // Optionally redirect to login or handle state clearing
   };

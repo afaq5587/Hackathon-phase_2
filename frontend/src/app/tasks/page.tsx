@@ -12,7 +12,7 @@ import { Task, Priority } from '../../services/types';
 import { fetchTasks } from '../../services/api';
 
 export default function TasksPage() {
-  const { token, logout } = useAuth();
+  const { token, user, logout } = useAuth();
   const router = useRouter();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -78,7 +78,7 @@ export default function TasksPage() {
           <div className="flex justify-between items-center mb-8">
             <div>
               <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
-                Your Tasks
+                {user?.name ? `Welcome, ${user.name}` : 'Your Tasks'}
               </h1>
               <p className="text-gray-400 mt-2">Manage and organize your workflow</p>
             </div>

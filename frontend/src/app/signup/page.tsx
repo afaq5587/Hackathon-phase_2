@@ -6,6 +6,7 @@ import { signUp } from '../../lib/auth-client';
 
 export default function SignupPage() {
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -17,7 +18,7 @@ export default function SignupPage() {
     setIsLoading(true);
     
     try {
-      const { data, error } = await signUp.email({ email, password, name: email.split('@')[0] });
+      const { data, error } = await signUp.email({ email, password, name: name || email.split('@')[0] });
       
       if (error) {
         throw new Error(error.message || "Registration failed");
@@ -60,6 +61,20 @@ export default function SignupPage() {
                 <p className="text-red-300 text-sm text-center">{error}</p>
               </div>
             )}
+
+            <div className="space-y-2">
+              <label htmlFor="name" className="text-sm font-medium text-gray-300">
+                Full Name (Optional)
+              </label>
+              <input
+                id="name"
+                type="text"
+                placeholder="John Doe"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent transition-all"
+              />
+            </div>
             
             <div className="space-y-2">
               <label htmlFor="email" className="text-sm font-medium text-gray-300">
